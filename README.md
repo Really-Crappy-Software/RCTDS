@@ -1,2 +1,3 @@
 # RCTDS
-Really Crappt TCP Data Sender
+# Really Crappy TCP Data Sender
+* SYNTAX rctds PORT IP
