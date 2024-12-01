@@ -5,8 +5,17 @@
 #include <netinet/in.h>
 #include <stdlib.h>
 #include <arpa/inet.h>
+#include <netdb.h>
 
 int main(int argc, char* argv[]) {
+if (strcmp(argv[1], "-h") == 0) {
+  printf("SYNTAX rctds (-h) PORT ADDRESS  \n -h: Displays this menu \n If you have any problems report them on Github\n");
+  printf("NOTE: Do not put -h if you want to connect to a socket\n");
+  return 0;
+  }
+    FILE *hostname = fopen("/etc/hostname", "r");
+    char hostnamec[100];
+    fgets(hostnamec, 100, hostname);
     int port = atoi(argv[1]);
   char buffer[100];
     printf("Input the message you want to send\n");
@@ -43,4 +52,3 @@ if (connect(sockfd, addr, sockbuf) < 0 ) {
     }
   }
 }
-
