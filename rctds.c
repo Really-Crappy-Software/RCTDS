@@ -8,6 +8,25 @@
 #include <netdb.h>
 
 int main(int argc, char* argv[]) {
+  char domain[INET_ADDRSTRLEN];
+  struct addrinfo radio, *head, *ok;
+  memset(&radio, 0, sizeof(radio));
+  radio.ai_family = AF_INET;
+  radio.ai_socktype = SOCK_STREAM;
+  radio.ai_flags = 0;
+  if (getaddrinfo(argv[2], argv[1], &radio, &head) < 0) {
+    printf("Couldn't get the address info\n");
+    return -1;
+  }
+  for (ok = head;ok != NULL; ok = head->ai_next) {
+    void *baddr;
+    if (ok->ai_family == AF_INET) {
+      struct sockaddr_in *ipv4addr = (struct sockaddr_in *)ok->ai_addr;
+      baddr = &(ipv4addr->sin_addr);
+    }
+    inet_ntop(ok->ai_family, baddr, domain, sizeof(domain));
+    printf("IP: %s\n", domain);
+  }
 if (strcmp(argv[1], "-h") == 0) {
   printf("SYNTAX rctds (-h) PORT ADDRESS  \n -h: Displays this menu \n If you have any problems report them on Github\n");
   printf("NOTE: Do not put -h if you want to connect to a socket\n");
@@ -28,7 +47,7 @@ if (strcmp(argv[1], "-h") == 0) {
 struct sockaddr_in feetpics;
   feetpics.sin_family = AF_INET;
 feetpics.sin_port = htons(port);
-feetpics.sin_addr.s_addr = inet_addr(argv[2]);
+feetpics.sin_addr.s_addr = inet_addr(domain);
 struct sockaddr *addr = (struct sockaddr *)&feetpics;
 socklen_t sockbuf;
 sockbuf = sizeof(feetpics);
