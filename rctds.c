@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <arpa/inet.h>
 #include <netdb.h>
+#include <unistd.h>
 
 int main(int argc, char* argv[]) {
   char domain[INET_ADDRSTRLEN];
@@ -36,25 +37,26 @@ if (strcmp(argv[1], "-h") == 0) {
     char hostnamec[100];
     fgets(hostnamec, 100, hostname);
     int port = atoi(argv[1]);
-  char buffer[100];
-    printf("Input the message you want to send\n");
-    fgets(buffer, 100, stdin);
+    struct sockaddr_in feetpics;
+      feetpics.sin_family = AF_INET;
+    feetpics.sin_port = htons(port);
+    feetpics.sin_addr.s_addr = inet_addr(domain);
+    struct sockaddr *addr = (struct sockaddr *)&feetpics;
+    socklen_t sockbuf;
+    sockbuf = sizeof(feetpics);
+	  while (main) {
   int sockfd = socket(AF_INET, SOCK_STREAM, 0);
   if (sockfd < 0) {
     printf("Not Working\n");
     return -1;
   }
-struct sockaddr_in feetpics;
-  feetpics.sin_family = AF_INET;
-feetpics.sin_port = htons(port);
-feetpics.sin_addr.s_addr = inet_addr(domain);
-struct sockaddr *addr = (struct sockaddr *)&feetpics;
-socklen_t sockbuf;
-sockbuf = sizeof(feetpics);
 if (connect(sockfd, addr, sockbuf) < 0 ) {
     printf("couldn't establish a connection with 127.0.0.1\n");
     return -1;
   } else {
+		  char buffer[100];
+		    printf("Input the message you want to send\n");
+		    fgets(buffer, 100, stdin);
       struct sockaddr_in jaycar;
       struct sockaddr *radioshack = (struct sockaddr *)&jaycar;
       socklen_t jaycarbuf = sizeof(jaycar);
@@ -68,6 +70,8 @@ if (connect(sockfd, addr, sockbuf) < 0 ) {
       return -1;
     } else {
       printf("Message sent\n");
+      close(sockfd);
     }
+	  }
   }
 }
